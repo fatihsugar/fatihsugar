@@ -1,8 +1,11 @@
 <h1 align="center">Hi 👋, I'm Fatih Şeker</h1>
 <img src="https://i.pinimg.com/originals/c6/a5/98/c6a5985dd1ed8805bd2c6e2b2ea4d701.gif" align="right">
+
 ✧ 🔭 I’m currently working on [Svaceis](https://www.svaceis.com/)
 
 ✧ 🌱 I'm learning the Unity Game engine at **Oyun ve Uygulama Akademisi**
+
+✧ 📫 How to reach me **linkedin.com/in/fatihsugar/**
 
 ✧ ⚡ My favorite trait is being **positive**
 
