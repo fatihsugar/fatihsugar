@@ -1,4 +1,4 @@
-<a href="#"><img width="100%" height="auto" src="https://i.pinimg.com/originals/c6/a5/98/c6a5985dd1ed8805bd2c6e2b2ea4d701.gif" height="100px"/></a>
+<a href="#"><img width="100%" height="auto" src="https://i.pinimg.com/originals/c6/a5/98/c6a5985dd1ed8805bd2c6e2b2ea4d701.gif" height="20px"/></a>
 <h1 align="center">Hi 👋, I'm Fatih Şeker</h1>
 <div style="text-align:center">
 ✧ 🔭 I’m currently working on [Svaceis](https://www.svaceis.com/)
