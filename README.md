@@ -5,9 +5,9 @@
 
 ✧ 🌱 I'm learning the Unity Game engine at **Oyun ve Uygulama Akademisi**
 
-✧ 📫 How to reach me **linkedin.com/in/fatihsugar/**
-
 ✧ ⚡ My favorite trait is being **positive**
+
+✧ 📫 How can I contact **linkedin.com/in/fatihsugar/**
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
