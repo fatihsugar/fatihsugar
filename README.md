@@ -1,6 +1,6 @@
 <img width="100%" height="500px" src="https://i.pinimg.com/originals/c6/a5/98/c6a5985dd1ed8805bd2c6e2b2ea4d701.gif"/>
 <h1 align="center">Hi 👋, I'm Fatih Şeker</h1>
-<div>
+
 ✧ 🔭 I’m currently working on [Svaceis](https://www.svaceis.com/)
 
 ✧ 🌱 I'm learning the Unity Game engine at **Oyun ve Uygulama Akademisi**
@@ -8,7 +8,7 @@
 ✧ 📫 How to reach me **linkedin.com/in/fatihsugar/**
 
 ✧ ⚡ My favorite trait is being **positive**
-</div>
+
 <h3 align="left">Connect with me:</h3>
 <p align="left">
 <a href="https://twitter.com/svaceis" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="svaceis" height="30" width="40" /></a>
