@@ -1,13 +1,13 @@
 <img width="100%" height="500px" src="https://i.pinimg.com/originals/c6/a5/98/c6a5985dd1ed8805bd2c6e2b2ea4d701.gif"/>
 <h1 align="center">Hi 👋, I'm Fatih Şeker</h1>
 
-✧ 🔭 I’m currently working on [Svaceis](https://www.svaceis.com/)
+✧ 🔭 I'm making improvements to my [Svaceis](https://www.svaceis.com/) project.
 
-✧ 🌱 I'm learning the Unity Game engine at **Oyun ve Uygulama Akademisi**
+✧ 🌱 I am actively working as a **System Operations Specialist** within Migros.
 
-✧ ⚡ My favorite trait is being **positive**
+✧ ⚡ My favorite feature is **positive**
 
-✧ 📫 How can I contact **linkedin.com/in/fatihsugar/**
+✧ 📫 How can I contact you? **linkedin.com/in/fatihsugar/**
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
