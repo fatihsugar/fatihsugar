@@ -85,9 +85,13 @@ def _get(url, token, data=None):
 
 
 def fetch_stats():
-    token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
-    stats = dict(repos="—", stars="—", followers="—", commits="—", contribs="—",
-                 contributed="—", created=None)
+    # PROFILE_TOKEN (isteğe bağlı): gizli repoları ve gizli commit'leri de saymak için
+    # "repo" okuma izinli kişisel token. Yoksa sadece herkese açık veriler kullanılır.
+    pat = os.getenv("PROFILE_TOKEN")
+    token = pat or os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
+    stats = dict(full=bool(pat), repos="—", private=None, stars="—", followers="—",
+                 commits=None, contribs="—", public_contribs=None, private_contribs=None,
+                 created=None)
     try:
         u = _get(f"https://api.github.com/users/{USER}", token)
         stats["followers"] = u["followers"]
@@ -97,15 +101,23 @@ def fetch_stats():
         stats["stars"] = sum(r["stargazers_count"] for r in repos if not r["fork"])
         if token:
             q = {"query": "query($l:String!){user(login:$l){"
-                          "repositoriesContributedTo(contributionTypes:[COMMIT,PULL_REQUEST,REPOSITORY]){totalCount}"
-                          "contributionsCollection{"
-                          "totalCommitContributions contributionCalendar{totalContributions}}}}",
+                          "repositories(ownerAffiliations:OWNER){totalCount} "
+                          "contributionsCollection{totalCommitContributions restrictedContributionsCount "
+                          "contributionCalendar{totalContributions}}}}",
                  "variables": {"l": USER}}
             g = _get("https://api.github.com/graphql", token, json.dumps(q).encode())
-            cc = g["data"]["user"]["contributionsCollection"]
-            stats["contributed"] = g["data"]["user"]["repositoriesContributedTo"]["totalCount"]
-            stats["commits"] = cc["totalCommitContributions"]
-            stats["contribs"] = cc["contributionCalendar"]["totalContributions"]
+            user = g["data"]["user"]
+            cc = user["contributionsCollection"]
+            total = cc["contributionCalendar"]["totalContributions"]
+            restricted = cc["restrictedContributionsCount"]
+            stats["contribs"] = total
+            if restricted and not pat:  # PAT ile gizliler zaten "görünür" sayılır
+                stats["private_contribs"] = restricted
+                stats["public_contribs"] = total - restricted
+            if pat:  # token sahibi = profil sahibi → gizli veriler de görünür
+                stats["commits"] = cc["totalCommitContributions"]
+                all_repos = user["repositories"]["totalCount"]
+                stats["private"] = max(all_repos - stats["repos"], 0)
     except Exception as e:  # internet yoksa kart yine de üretilir
         print("GitHub API okunamadı:", e)
     return stats
@@ -116,7 +128,7 @@ def uptime(created):
     if not start:
         return "since day one"
     a = dt.date.fromisoformat(start)
-    t = dt.date.today()
+    t = dt.datetime.now(dt.timezone(dt.timedelta(hours=3))).date()  # İstanbul
     y = t.year - a.year
     m = t.month - a.month
     d = t.day - a.day
@@ -218,14 +230,21 @@ def render(theme, stats, art):
         right.append(kv_line(k, v, c))
     right.append("")
     right.append(section("GitHub Stats", c))
-    right.append(kv_line("Repos", "", c, [
-        (f'{stats["repos"]}', c["value"]), (" {", c["dim"]), ("Contributed", c["key"]),
-        (f': {stats["contributed"]}', c["value"]), ("}", c["dim"])]))
+    repo_parts = [(f'{stats["repos"]}', c["value"]), (" public", c["dim"])]
+    if stats["private"]:
+        repo_parts += [(" {", c["dim"]), ("Private", c["key"]),
+                       (f': {stats["private"]}', c["value"]), ("}", c["dim"])]
+    right.append(kv_line("Repos", "", c, repo_parts))
     right.append(kv_line("Stars", str(stats["stars"]), c))
     right.append(kv_line("Followers", str(stats["followers"]), c))
-    right.append(kv_line("Commits (last year)", str(stats["commits"]), c))
-    right.append(kv_line("Contributions (last year)", "", c, [
-        (f'{stats["contribs"]}', c["add"]), (" ++", c["add"])]))
+    if stats["commits"] is not None:
+        right.append(kv_line("Commits (last year)", str(stats["commits"]), c))
+    contrib_parts = [(f'{stats["contribs"]}', c["add"])]
+    if stats["private_contribs"] is not None:
+        contrib_parts += [(" (", c["dim"]), (f'{stats["public_contribs"]} public', c["value"]),
+                          (", ", c["dim"]), (f'{stats["private_contribs"]} private', c["value"]),
+                          (")", c["dim"])]
+    right.append(kv_line("Contributions (last year)", "", c, contrib_parts))
 
     top = 40                                  # başlık çubuğu
     y0 = top + 30                             # ilk komut satırı
