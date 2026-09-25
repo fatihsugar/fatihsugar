@@ -1,0 +1,38 @@
+name: Update neofetch card
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"     # 6 saatte bir
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate SVGs
+        run: python generate.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # SVG'ler ayrı "output" branch'ine gider; main'in commit geçmişi
+      # sadece senin commit'lerinden oluşur.
+      - name: Publish to output branch
+        run: |
+          mkdir -p /tmp/out && cp dark_mode.svg light_mode.svg /tmp/out/
+          cd /tmp/out
+          git init -q -b output
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add . && git commit -q -m "update neofetch card"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" output
