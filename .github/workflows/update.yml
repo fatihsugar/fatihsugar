@@ -24,6 +24,7 @@ jobs:
         run: python generate.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROFILE_TOKEN: ${{ secrets.PROFILE_TOKEN }}   # isteğe bağlı
 
       # SVG'ler ayrı "output" branch'ine gider; main'in commit geçmişi
       # sadece senin commit'lerinden oluşur.
